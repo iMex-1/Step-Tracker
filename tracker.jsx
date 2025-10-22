@@ -49,7 +49,7 @@ export default function StepTracker() {
     if (numSteps < 1000) activityLevel = "💤 Idle";
     else if (numSteps < 5000) activityLevel = "🚶 Walking";
     else if (numSteps < 10000) activityLevel = "🏃 Running";
-    else activityLevel = "⚡ Max Speed";
+    else activityLevel = "⚡ Max Activity";
 
     setStats({
       distance: distance.toFixed(2),
@@ -72,10 +72,8 @@ export default function StepTracker() {
   const getActivityGif = () => {
     const s = stats.numSteps;
     if (s < 1000) return sonicidle; // idle
-    if (s < 5000)
-      return sonicrun; // walking
-    if (s < 10000)
-      return sonicspeed; // running
+    if (s < 5000) return sonicrun; // walking
+    if (s < 10000) return sonicspeed; // running
     return sonicultimate; // max speed
   };
 
