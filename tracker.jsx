@@ -5,6 +5,7 @@ import { FaWalking, FaFireAlt, FaClock, FaHeartbeat } from "react-icons/fa";
 
 import sonicidle from "./assets/sonicidle.gif";
 import sonicrun from "./assets/sonicrun.gif";
+import sonicspeed from "./assets/sonicspeed.gif";
 
 export default function StepTracker() {
   const [steps, setSteps] = useState("");
@@ -73,7 +74,7 @@ export default function StepTracker() {
     if (s < 5000)
       return sonicrun; // walking
     if (s < 10000)
-      return "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"; // running
+      return sonicspeed; // running
     return "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif"; // max speed
   };
 
