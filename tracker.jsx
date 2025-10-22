@@ -48,6 +48,14 @@ export default function StepTracker() {
     return "success";
   };
 
+  const getActivityGif = () => {
+    if (stats.numSteps < 5000)
+      return "https://media.giphy.com/media/3orieYzUkkpQbTzZqQ/giphy.gif"; // sedentary - sitting
+    if (stats.numSteps < 10000)
+      return "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"; // walking
+    return "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"; // running
+  };
+
   return (
     <div className="container mt-5">
       <h3 className="text-center mb-4 text-primary fw-bold">
@@ -115,6 +123,16 @@ export default function StepTracker() {
                 <FaHeartbeat /> Niveau d’activité
               </h5>
               <p className="fs-5 fw-bold text-success">{stats.activityLevel}</p>
+              <img
+                src={getActivityGif()}
+                alt="niveau activité"
+                style={{
+                  width: "100%",
+                  height: "90px",
+                  objectFit: "cover",
+                  borderRadius: "8px",
+                }}
+              />
             </Card.Body>
           </Card>
         </div>
