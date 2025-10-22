@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ProgressBar, Card } from "react-bootstrap";
 import { FaWalking, FaFireAlt, FaClock, FaHeartbeat } from "react-icons/fa";
 import sonicidle from "./assets/sonicidle.gif"
+import sonicrun from "./assets/sonicrun.gif"
 
 export default function StepTracker() {
   const [steps, setSteps] = useState("");
@@ -57,7 +58,7 @@ export default function StepTracker() {
     if (s < 1000)
       return sonicidle; // idle
     if (s < 5000)
-      return "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"; // walking
+      return sonicrun; // walking
     if (s < 10000)
       return "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"; // running
     return "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif"; // max speed
