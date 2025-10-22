@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ProgressBar, Card } from "react-bootstrap";
 import { FaWalking, FaFireAlt, FaClock, FaHeartbeat } from "react-icons/fa";
+import sonicidle from "./assets/sonicidle.gif"
 
 export default function StepTracker() {
   const [steps, setSteps] = useState("");
@@ -54,7 +55,7 @@ export default function StepTracker() {
   const getActivityGif = () => {
     const s = stats.numSteps;
     if (s < 1000)
-      return "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif"; // idle
+      return sonicidle; // idle
     if (s < 5000)
       return "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"; // walking
     if (s < 10000)
@@ -134,7 +135,7 @@ export default function StepTracker() {
                 alt="niveau activité"
                 style={{
                   width: "100%",
-                  height: "90px",
+                  height: "200px",
                   objectFit: "cover",
                   borderRadius: "8px",
                   transition: "all 0.3s ease-in-out",
