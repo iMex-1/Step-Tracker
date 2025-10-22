@@ -5,7 +5,6 @@ import { FaWalking, FaFireAlt, FaClock, FaHeartbeat } from "react-icons/fa";
 
 import sonicidle from "./assets/sonicidle.gif";
 import sonicrun from "./assets/sonicrun.gif";
-import sonicidle from "./assets/sonicidle.gif";
 
 export default function StepTracker() {
   const [steps, setSteps] = useState("");
