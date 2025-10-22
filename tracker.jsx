@@ -28,9 +28,10 @@ export default function StepTracker() {
     const duration = numSteps / 100; // minutes
 
     let activityLevel = "";
-    if (numSteps < 5000) activityLevel = "Sédentaire 🛋️";
-    else if (numSteps < 10000) activityLevel = "Actif 🚶‍♂️";
-    else activityLevel = "Très actif 💪";
+    if (numSteps < 1000) activityLevel = "Au repos 💤";
+    else if (numSteps < 5000) activityLevel = "Marche légère 🚶";
+    else if (numSteps < 10000) activityLevel = "Course 🏃";
+    else activityLevel = "Vitesse maximale ⚡";
 
     setStats({
       distance: distance.toFixed(2),
@@ -43,17 +44,22 @@ export default function StepTracker() {
 
   const getProgressVariant = () => {
     const s = stats.numSteps;
-    if (s < 5000) return "danger";
+    if (s < 1000) return "secondary";
+    if (s < 5000) return "info";
     if (s < 10000) return "warning";
     return "success";
   };
 
+  // 👇 4 GIFs for different activity levels
   const getActivityGif = () => {
-    if (stats.numSteps < 5000)
-      return "https://media.giphy.com/media/3orieYzUkkpQbTzZqQ/giphy.gif"; // sedentary - sitting
-    if (stats.numSteps < 10000)
+    const s = stats.numSteps;
+    if (s < 1000)
+      return "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif"; // idle
+    if (s < 5000)
       return "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"; // walking
-    return "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"; // running
+    if (s < 10000)
+      return "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"; // running
+    return "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif"; // max speed
   };
 
   return (
@@ -131,6 +137,7 @@ export default function StepTracker() {
                   height: "90px",
                   objectFit: "cover",
                   borderRadius: "8px",
+                  transition: "all 0.3s ease-in-out",
                 }}
               />
             </Card.Body>
