@@ -49,6 +49,7 @@ export default function StepTracker() {
   };
 
   const getActivityGif = () => {
+    if(stats.numSteps<100) return "./assets/sonicidle.gif"
     if (stats.numSteps < 5000)
       return "https://media.giphy.com/media/3orieYzUkkpQbTzZqQ/giphy.gif"; // sedentary - sitting
     if (stats.numSteps < 10000)
@@ -62,18 +63,49 @@ export default function StepTracker() {
         🏃‍♂️ StepTracker - Suivi des pas
       </h3>
 
-      <div className="d-flex justify-content-center mb-3">
+    <div className="d-flex justify-content-center align-items-center mb-3">
+      <div className="d-flex align-items-center w-50">
         <input
           type="number"
-          className="form-control w-50 me-2"
+          className="form-control me-2"
           placeholder="Entrez le nombre de pas effectués"
           value={steps}
           onChange={(e) => setSteps(e.target.value)}
         />
-        <button className="btn btn-success" onClick={handleCalculate}>
-          Calculer
-        </button>
+
+        {/* GIF appears only when user is typing */}
+        {steps && (
+          <div
+            className="ms-2"
+            style={{
+              width: "60px",
+              height: "60px",
+            }}
+          >
+            <img
+              src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" // typing / thinking GIF
+              alt="typing animation"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "8px",
+              }}
+            />
+          </div>
+        )}
       </div>
+
+      <button
+        className="btn btn-success ms-3"
+        onClick={() => {
+          handleCalculate();
+          setSteps(""); // hide GIF after calculation
+        }}
+      >
+        Calculer
+      </button>
+    </div>
 
       {error && (
         <div className="alert alert-danger text-center w-75 mx-auto">
