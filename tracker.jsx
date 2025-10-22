@@ -1,8 +1,17 @@
 import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { ProgressBar, Card } from "react-bootstrap";
+import { FaWalking, FaFireAlt, FaClock, FaHeartbeat } from "react-icons/fa";
 
 export default function StepTracker() {
   const [steps, setSteps] = useState("");
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState({
+    distance: 0,
+    calories: 0,
+    duration: 0,
+    activityLevel: "Aucun",
+    numSteps: 0,
+  });
   const [error, setError] = useState("");
 
   const handleCalculate = () => {
@@ -10,7 +19,6 @@ export default function StepTracker() {
 
     if (isNaN(numSteps) || numSteps <= 0) {
       setError("⚠️ Veuillez entrer un nombre de pas valide !");
-      setStats(null);
       return;
     }
 
@@ -33,16 +41,16 @@ export default function StepTracker() {
     });
   };
 
-  const getProgressColor = () => {
-    if (!stats) return "bg-secondary";
-    if (stats.numSteps < 5000) return "bg-danger";
-    if (stats.numSteps < 10000) return "bg-warning";
-    return "bg-success";
+  const getProgressVariant = () => {
+    const s = stats.numSteps;
+    if (s < 5000) return "danger";
+    if (s < 10000) return "warning";
+    return "success";
   };
 
   return (
     <div className="container mt-5">
-      <h3 className="text-center mb-4 text-primary">
+      <h3 className="text-center mb-4 text-primary fw-bold">
         🏃‍♂️ StepTracker - Suivi des pas
       </h3>
 
@@ -65,64 +73,70 @@ export default function StepTracker() {
         </div>
       )}
 
-      {stats && (
-        <>
-          <div className="row text-center mt-4">
-            <div className="col-md-3 mb-3">
-              <div className="card border-primary">
-                <div className="card-body">
-                  <h5 className="card-title">Distance</h5>
-                  <p className="card-text fw-bold">{stats.distance} km</p>
-                </div>
-              </div>
-            </div>
+      {/* Stats Cards */}
+      <div className="row text-center mt-4">
+        <div className="col-md-3 mb-3">
+          <Card className="border border-primary shadow-sm">
+            <Card.Body>
+              <h5 className="text-primary">
+                <FaWalking /> Distance
+              </h5>
+              <p className="fs-5 fw-bold">{stats.distance} km</p>
+            </Card.Body>
+          </Card>
+        </div>
 
-            <div className="col-md-3 mb-3">
-              <div className="card border-success">
-                <div className="card-body">
-                  <h5 className="card-title">Calories brûlées</h5>
-                  <p className="card-text fw-bold">{stats.calories} kcal</p>
-                </div>
-              </div>
-            </div>
+        <div className="col-md-3 mb-3">
+          <Card className="border border-warning shadow-sm">
+            <Card.Body>
+              <h5 style={{ color: "orange" }}>
+                <FaFireAlt /> Calories brûlées
+              </h5>
+              <p className="fs-5 fw-bold text-warning">{stats.calories} kcal</p>
+            </Card.Body>
+          </Card>
+        </div>
 
-            <div className="col-md-3 mb-3">
-              <div className="card border-warning">
-                <div className="card-body">
-                  <h5 className="card-title">Durée estimée</h5>
-                  <p className="card-text fw-bold">{stats.duration} min</p>
-                </div>
-              </div>
-            </div>
+        <div className="col-md-3 mb-3">
+          <Card className="border border-info shadow-sm">
+            <Card.Body>
+              <h5 className="text-info">
+                <FaClock /> Durée estimée
+              </h5>
+              <p className="fs-5 fw-bold text-info">{stats.duration} min</p>
+            </Card.Body>
+          </Card>
+        </div>
 
-            <div className="col-md-3 mb-3">
-              <div className="card border-danger">
-                <div className="card-body">
-                  <h5 className="card-title">Niveau d’activité</h5>
-                  <p className="card-text fw-bold">{stats.activityLevel}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="col-md-3 mb-3">
+          <Card className="border border-success shadow-sm">
+            <Card.Body>
+              <h5 className="text-success">
+                <FaHeartbeat /> Niveau d’activité
+              </h5>
+              <p className="fs-5 fw-bold text-success">{stats.activityLevel}</p>
+            </Card.Body>
+          </Card>
+        </div>
+      </div>
 
-          <div className="mt-4 text-center">
-            <p className="mb-1">
-              Objectif 🎯 : <strong>10 000 pas</strong>
-            </p>
-            <div className="progress w-75 mx-auto" style={{ height: "20px" }}>
-              <div
-                className={`progress-bar ${getProgressColor()}`}
-                role="progressbar"
-                style={{
-                  width: `${Math.min((stats.numSteps / 10000) * 100, 100)}%`,
-                }}
-              >
-                {Math.min((stats.numSteps / 10000) * 100, 100).toFixed(0)}%
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+      {/* Progress Bar */}
+      <div className="mt-4 text-center">
+        <p className="mb-2">
+          Objectif 🎯 : <strong>10 000 pas</strong>
+        </p>
+        <div className="w-75 mx-auto">
+          <ProgressBar
+            now={Math.min((stats.numSteps / 10000) * 100, 100)}
+            label={`${Math.min((stats.numSteps / 10000) * 100, 100).toFixed(
+              0
+            )}%`}
+            variant={getProgressVariant()}
+            animated
+            striped
+          />
+        </div>
+      </div>
     </div>
   );
 }
