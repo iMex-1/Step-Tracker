@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ProgressBar, Card } from "react-bootstrap";
 import { FaWalking, FaFireAlt, FaClock, FaHeartbeat } from "react-icons/fa";
-import sonicidle from "./assets/sonicidle.gif"
+import sonicidle from "./assets/sonicidle.gif";
 
 export default function StepTracker() {
   const [steps, setSteps] = useState("");
@@ -15,11 +15,24 @@ export default function StepTracker() {
   });
   const [error, setError] = useState("");
 
-  const handleCalculate = () => {
+  // 🔁 Automatically calculate stats when input changes
+  useEffect(() => {
     const numSteps = parseInt(steps);
 
+    if (!steps) {
+      setError("");
+      setStats({
+        distance: 0,
+        calories: 0,
+        duration: 0,
+        activityLevel: "Aucun",
+        numSteps: 0,
+      });
+      return;
+    }
+
     if (isNaN(numSteps) || numSteps <= 0) {
-      setError("⚠️ Veuillez entrer un nombre de pas valide !");
+      setError("⚠️ Please enter a valid number of steps!");
       return;
     }
 
@@ -29,10 +42,10 @@ export default function StepTracker() {
     const duration = numSteps / 100; // minutes
 
     let activityLevel = "";
-    if (numSteps < 1000) activityLevel = "Au repos 💤";
-    else if (numSteps < 5000) activityLevel = "Marche légère 🚶";
-    else if (numSteps < 10000) activityLevel = "Course 🏃";
-    else activityLevel = "Vitesse maximale ⚡";
+    if (numSteps < 1000) activityLevel = "💤 Idle";
+    else if (numSteps < 5000) activityLevel = "🚶 Walking";
+    else if (numSteps < 10000) activityLevel = "🏃 Running";
+    else activityLevel = "⚡ Max Speed";
 
     setStats({
       distance: distance.toFixed(2),
@@ -41,7 +54,7 @@ export default function StepTracker() {
       activityLevel,
       numSteps,
     });
-  };
+  }, [steps]);
 
   const getProgressVariant = () => {
     const s = stats.numSteps;
@@ -51,11 +64,10 @@ export default function StepTracker() {
     return "success";
   };
 
-  // 👇 4 GIFs for different activity levels
+  // 🌀 4 GIFs for activity levels
   const getActivityGif = () => {
     const s = stats.numSteps;
-    if (s < 1000)
-      return sonicidle; // idle
+    if (s < 1000) return sonicidle; // idle
     if (s < 5000)
       return "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"; // walking
     if (s < 10000)
@@ -66,20 +78,17 @@ export default function StepTracker() {
   return (
     <div className="container mt-5">
       <h3 className="text-center mb-4 text-primary fw-bold">
-        🏃‍♂️ StepTracker - Suivi des pas
+        🏃‍♂️ StepTracker - Step Monitor
       </h3>
 
       <div className="d-flex justify-content-center mb-3">
         <input
           type="number"
-          className="form-control w-50 me-2"
-          placeholder="Entrez le nombre de pas effectués"
+          className="form-control w-50"
+          placeholder="Enter number of steps..."
           value={steps}
           onChange={(e) => setSteps(e.target.value)}
         />
-        <button className="btn btn-success" onClick={handleCalculate}>
-          Calculer
-        </button>
       </div>
 
       {error && (
@@ -105,7 +114,7 @@ export default function StepTracker() {
           <Card className="border border-warning shadow-sm">
             <Card.Body>
               <h5 style={{ color: "orange" }}>
-                <FaFireAlt /> Calories brûlées
+                <FaFireAlt /> Calories
               </h5>
               <p className="fs-5 fw-bold text-warning">{stats.calories} kcal</p>
             </Card.Body>
@@ -116,7 +125,7 @@ export default function StepTracker() {
           <Card className="border border-info shadow-sm">
             <Card.Body>
               <h5 className="text-info">
-                <FaClock /> Durée estimée
+                <FaClock /> Duration
               </h5>
               <p className="fs-5 fw-bold text-info">{stats.duration} min</p>
             </Card.Body>
@@ -127,16 +136,16 @@ export default function StepTracker() {
           <Card className="border border-success shadow-sm">
             <Card.Body>
               <h5 className="text-success">
-                <FaHeartbeat /> Niveau d’activité
+                <FaHeartbeat /> Activity Level
               </h5>
               <p className="fs-5 fw-bold text-success">{stats.activityLevel}</p>
               <img
                 src={getActivityGif()}
-                alt="niveau activité"
+                alt="activity level"
                 style={{
                   width: "100%",
                   height: "200px",
-                  objectFit: "cover",
+                  objectFit: "fill",
                   borderRadius: "8px",
                   transition: "all 0.3s ease-in-out",
                 }}
@@ -149,7 +158,7 @@ export default function StepTracker() {
       {/* Progress Bar */}
       <div className="mt-4 text-center">
         <p className="mb-2">
-          Objectif 🎯 : <strong>10 000 pas</strong>
+          Goal 🎯 : <strong>10,000 steps</strong>
         </p>
         <div className="w-75 mx-auto">
           <ProgressBar
