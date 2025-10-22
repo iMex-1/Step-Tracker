@@ -40,7 +40,7 @@ It automatically calculates your <b>distance walked</b>, <b>calories burned</b>,
   </tr>
   <tr>
     <td>≥ 10,000</td>
-    <td>⚡ Max Speed</td>
+    <td>⚡ Max Activity</td>
   </tr>
 </table>
 
